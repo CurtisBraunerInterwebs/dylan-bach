@@ -4,7 +4,7 @@ import { getDatabase, ref, set, get, onValue, child, update, push} from "https:/
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from "https://www.gstatic.com/firebasejs/9.8.4/firebase-auth.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-analytics.js";
 import { getFirestore, collection, addDoc, getDocs  } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js"
-import { getStorage, ref as refST } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-storage.js";
+import { getStorage, ref as refST, listAll } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-storage.js";
 //import * as functions from "https://www.gstatic.com/firebasejs/9.8.4/firebase-functions.js";
 
 
@@ -38,13 +38,24 @@ function init() {
       const analytics = getAnalytics(app);
       const fs = getFirestore(app);
       const storage = getStorage();
-      const imagesRef = refST(storage, 'images');
+      const storeRef = refST(storage);
+      const imagesRef = refST(storage, '/pictures');
       //console.log("init started");
       var user;
       window.location.hash = 'welcome';
       var contactReady = true;
 
-    var guests, guestList;
+    var guests;
+    var guestList = [];
+    var guestVals =[];
+
+    function listFiles () {
+        listAll(imagesRef).then((ref) => {
+            console.log(ref);
+        })
+    }
+
+    listFiles();
 
     function emptyDB(){
         get(ref(db,'/')).then((snapshot) => {
@@ -62,41 +73,59 @@ function init() {
         })
     }
 
-    //emptyDB();
+    emptyDB();
 
     function listGuests () {
         console.log('listing guests');
-        var guest, guestVals;
+        var guest;
         var names = document.getElementById('rsvpName');
-        get(ref(db,'/guests')),((snapshot) => {
+        get(ref(db,'/guests')).then((snapshot) => {
             if (snapshot.exists()) {
-                guests = snapshot.val(); guestVals = Object.values(guests);
-                console.log(guests);
-                console.log(guestVals);
-                for (let i=0; i<guestVals; i++)  {
+                guests = snapshot.val(); //console.log(guests);
+                guestVals = Object.values(guests); //console.log(guestVals);                
+                if (guests.name == "Bungus") {
+                    set(ref(db,'/guests'),{
+                        'Dylan': {
+                            'name':'Dylan',
+                            'phone':'516-242-0709',
+                            'role':'Groom',
+                            'email': 'dylangordon999@gmail.com',
+                            'rsvp':false
+                        },'Curtis':{
+                            'name':'Curtis',
+                            'phone':'781-244-7604',
+                            'role':'Best Man',
+                            'email':'crbs1234@gmail.com',
+                            'rsvp':false
+                        }
+                });}
+                for (let i=0; i<guestVals.length; i++)  {
                     guest = guestVals[i].name;
+                    //console.log(guest + ' loaded');
                     guestList[i] = guest;
-                    console.log(guest + ' loaded');
+                    //console.log(guest + ' on list');
                     var nameOpt = document.createElement('option');
                     nameOpt.setAttribute('value',guest);
-                    names.appendChild(nameOpt);
+                    nameOpt.innerHTML = guest;
+                    names.add(nameOpt);
                 }
+                //console.log(guestList);
             } else {
                 if (confirm('Reload Dylan & Curtis only to guest list') == true) {
                 console.log('setting guests');
                 set(ref(db,'/guests'),{
-                    'dylan': {
+                    'Dylan': {
                         'name':'Dylan',
                         'phone':'516-242-0709',
                         'role':'Groom',
                         'email': 'dylangordon999@gmail.com',
-                        'rsvp':true
-                    },'curtis':{
+                        'rsvp':false
+                    },'Curtis':{
                         'name':'Curtis',
                         'phone':'781-244-7604',
                         'role':'Best Man',
                         'email':'crbs1234@gmail.com',
-                        'rsvp':true
+                        'rsvp':false
                     }
                 });
                 listGuests(); 
@@ -104,12 +133,23 @@ function init() {
                     alert('check the guest list, bitch');
                 }
             }
-            });
-            console.log(guestList);
-            
+            });            
     }
 
     listGuests();
+
+    document.getElementById('rsvpName').addEventListener('change', function(){
+        var guestName = document.getElementById('rsvpName').value;
+        //console.log(guests);
+        //console.log(guestName);
+        //console.log(guests[guestName]['email']);
+        var rsvpD = confirm('Hi ' + guestName + ' are you ready to RSVP to \nDARNGEON CRAWL of NYC?' );
+        if (rsvpD) {
+            update(ref(db, '/guests/'+guestName),{
+                'rsvp':true   
+            });                
+            console.log(guestName + ' has RSVP\'D');}
+    });
 
     function dblChk (question) {
         var answer;
@@ -121,20 +161,27 @@ function init() {
         return 
     }
 
-    //document.getElementById('addGuest').addEventListener('click',addGuests())
+    document.getElementById('addGuest').addEventListener('click', function () {
+        let info = prompt('Name, Phone, Role, Email, RSVP',"");
+        let infoList = info.split(", ");
+        console.log(infoList);
+        if (infoList[4] != 'yes') {infoList[4] = false;} else {infoList[4] = true;}
+        addGuests(infoList[0],infoList[1],infoList[2],infoList[3],infoList[4]);
+    });
 
-    function addGuests (id, name, phone, role, email, rsvp) {
-        var nameID = id;
-        set(ref(db,'/guests' + nameID),{
+    function addGuests (name, phone, role, email, rsvp) {
+        set(ref(db,'/guests/' + name),{
                 'name':name,
                 'phone':phone,
                 'role':role,
                 'email':email,
-                'rsvp':false
+                'rsvp':rsvp
         })
     }
 
-
+    document.getElementById('uploadPic').addEventListener('click', function () {
+        addPicToScroll();
+    });
 
     setInterval(scroll, 7500) ;  
 
@@ -175,6 +222,7 @@ function init() {
         var picName = document.getElementById('newPicName');
         var picImg = document.getElementById('newPicImg').value;
 
+
     }
 
     /* function addPicToScroll (pic) {
@@ -190,9 +238,7 @@ function init() {
         document.getElementById("carousel-inner-ID").appendChild(newPicDiv);
 
     } */
-    
-    
-    listGuests();     
+        
 
     function makeElements (newEl, id, inHTML, name, clss, rand, randVal, rand2, rand2Val) {
         if (id != undefined) {newEl.setAttribute('id', id); }

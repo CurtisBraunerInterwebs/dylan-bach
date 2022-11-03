@@ -111,7 +111,9 @@
       }
   
   
-      
+      h1 {
+        text-align: center;
+      }
   
         .navbar {
           text-align: right;
@@ -152,6 +154,37 @@
             /* margin-top: 26px; */
         }
     
+        #rsvpFS {
+            display: grid;
+            width: auto;
+            margin-inline: 20%;
+            margin-block: 1%;
+            justify-items: center;
+            padding: 20px;
+        }
+
+        #imageFS {
+            display: grid;
+            width: auto;
+            margin-inline: 20%;
+            margin-block: 1%;
+            justify-items: center;
+            padding: 20px;
+        }
+
+        #rsvpFS label {
+            font-size: xx-large;
+        }
+
+        #rsvpFS select {
+            width: max-content;
+            font-size: x-large;
+        }
+
+        form {
+            text-align: -webkit-center;
+        }
+
         .carousel-inner {
             position: relative;
             overflow: hidden;
@@ -180,7 +213,7 @@
             max-width: 100%;
             background: rgba(0, 0, 0);
             margin:auto;
-            height: 1200px;
+            
   
         }
     

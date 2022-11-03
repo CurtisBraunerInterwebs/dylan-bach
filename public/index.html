@@ -12,7 +12,7 @@
   </head>
   <body>
     <header>
-      <h1 class="navtitle" id="navtitle"> Welcome to the Darngeon Crawl</h1>
+      <h1 class="navtitle" id="navtitle"> <span id="addGuest">Welcome</span> to the Darngeon Crawl</h1>
       <div class="carousel" id="introCarousel">
         <div class="carousel-inner" id="carousel-inner-ID">
             <input class="carousel-open" type="radio" id="carousel-1" name="carousel" aria-hidden="true" hidden="" checked="checked">
@@ -31,14 +31,14 @@
             <div class="carousel-item">
                 <img src="/pictures/mmcd_newyears.jpg">
             </div>
-            <label for="carousel-4" class="carousel-control prev control-1" name="firstLabl">‹</label>
+            <!-- <label for="carousel-4" class="carousel-control prev control-1" name="firstLabl">‹</label>
             <label for="carousel-3" class="carousel-control prev control-4">‹</label>
             <label for="carousel-2" class="carousel-control prev control-3">‹</label>
             <label for="carousel-1" class="carousel-control prev control-2">‹</label>
             <label for="carousel-4" class="carousel-control next control-3">›</label>
             <label for="carousel-3" class="carousel-control next control-2">›</label>
             <label for="carousel-2" class="carousel-control next control-1">›</label>
-            <label for="carousel-1" class="carousel-control next control-4" name="lastLabl">›</label>
+            <label for="carousel-1" class="carousel-control next control-4" name="lastLabl">›</label> -->
             <ol class="carousel-indicators">
                 <li>
                     <label for="carousel-1" class="carousel-bullet">•</label>
@@ -59,8 +59,11 @@
     <div class="rsvp">
       <form class="rsvpForm">
         <fieldset id="rsvpFS">
+          <label for="rsvpName">Who are you?</label>
           <select id="rsvpName">
-
+            <option selected disabled hidden>
+              Find your name
+            </option>
           </select>
         </fieldset>
       </form>
