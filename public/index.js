@@ -51,7 +51,8 @@ function init() {
 
     function listFiles () {
         listAll(imagesRef).then((ref) => {
-            console.log(ref);
+            //set(ref(db, '/pics'),{});
+            console.log(ref.items);
         })
     }
 
@@ -143,6 +144,8 @@ function init() {
         //console.log(guests);
         //console.log(guestName);
         //console.log(guests[guestName]['email']);
+        let guestInfo = get(ref(db, '/guests/'+guestName),(snapshot) => {})
+        if guestInfo[]
         var rsvpD = confirm('Hi ' + guestName + ' are you ready to RSVP to \nDARNGEON CRAWL of NYC?' );
         if (rsvpD) {
             update(ref(db, '/guests/'+guestName),{
@@ -225,19 +228,22 @@ function init() {
 
     }
 
-    /* function addPicToScroll (pic) {
+    function addPicToScroll (pic) {
+        //Picture Flipper
         var newPicInput = document.createElement("input");
         makeElements (newPicInput, "carousel-" + picCount+1, null,"carousel","carousel-open","type","radio", "hidden","");
+        //Picture Container
         var newPicDiv = document.createElement("div");
         newPicDiv.setAttribute("class","carousel-item");
         newPicDiv.setAttribute("id","carousel-item-div");
+        //Picture Path
         var newPicImg = document.createElement("img");
         newPicImg.setAttribute("src","'pictures/"+pic);
         newPicDiv.appendChild(newPicImg);
         document.getElementById("carousel-inner-ID").appendChild(newPicInput);
         document.getElementById("carousel-inner-ID").appendChild(newPicDiv);
 
-    } */
+    }
         
 
     function makeElements (newEl, id, inHTML, name, clss, rand, randVal, rand2, rand2Val) {
