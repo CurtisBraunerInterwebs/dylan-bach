@@ -62,8 +62,9 @@ function init() {
     function emptyDB(){
         get(ref(db,'/')).then((snapshot) => {
             if (snapshot.exists()) {
-                console.log('data available');
+                //console.log('data available');
             } else {
+                alert('No Guest Info');
                 set(ref(db,'/'),{
                     'guests':{
                         'name':'Bungus',
@@ -141,16 +142,17 @@ function init() {
     function listPics () {
         get(ref(db,'/pics')).then((snapshot) => {
             if (snapshot.exists()) {
-                console.log('Pic List Present');
+                //console.log('Pic List Present');
                 let pics = snapshot.val(); console.log(pics);
                 let picVals = Object.values(pics); console.log(picVals);
                 for (let i=0; i<picVals.length; i++) {
                     let picture = picVals[i].name;
-                    console.log(picture + ' loaded');
+                    //console.log(picture + ' loaded');
                     picList[i] = picture;
                 }
             } else {
                 console.log('No Pic List');
+                picCount = 4;
                 set(ref(db,'/pics'),{
                     'pic 1':{
                         'name':'hugging_bear.jpg',
@@ -225,13 +227,43 @@ function init() {
         addPicToScroll();
     });
 
-    setInterval(scroll, 7500) ;  
-
+    setInterval(scroll, 3500) ;  
+        var setScroll = false;
       function scroll() {
         //console.log("scrolling");
-        let buttons = document.getElementsByClassName("carousel-open");
+        //let buttons = document.getElementsByClassName("carousel-open");
+        //console.log(picList);
         //check which is checked
-        // Pic 1
+        for (let i=0; i<picList.length; i++) {
+                switchCarousel(i);
+                if (setScroll) {break;}
+            } 
+        }
+    
+
+        function switchCarousel (i) {
+            //console.log(i);
+            var curr = i+1; 
+            var next = curr+1;
+            if (curr==picList.length) {
+                console.log('restart pic scroll');
+                next = 1;
+            } 
+            var currCaro = document.getElementById('carousel-'+curr);
+            //console.log(currCaro);
+            var nextCaro = document.getElementById('carousel-'+next);
+            //console.log(nextCaro);
+            if (currCaro.getAttribute("checked") == "checked") { 
+               currCaro.removeAttribute("checked");
+               nextCaro.setAttribute("checked", "checked");
+                setScroll = true;
+            } else {
+                setScroll = false;
+            } 
+        }
+        
+
+        /* // Pic 1
         if (buttons[0].getAttribute("checked") == "checked") {
           //console.log(buttons[0].getAttribute("id") + " checked");
           buttons[0].removeAttribute("checked");
@@ -251,8 +283,8 @@ function init() {
           //console.log(buttons[3].getAttribute("id") + " checked");
           buttons[3].removeAttribute("checked");
           buttons[0].setAttribute("checked", "checked");
-        }
-      }
+        } */
+      
 
     var picCount = 0;
 
