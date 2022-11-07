@@ -47,7 +47,8 @@ function init() {
 
     var guests;
     var guestList = [];
-    var guestVals =[];
+    var guestVals = [];
+    var picList = [];
 
     function listFiles () {
         listAll(imagesRef).then((ref) => {
@@ -137,7 +138,44 @@ function init() {
             });            
     }
 
+    function listPics () {
+        get(ref(db,'/pics')).then((snapshot) => {
+            if (snapshot.exists()) {
+                console.log('Pic List Present');
+                let pics = snapshot.val(); console.log(pics);
+                let picVals = Object.values(pics); console.log(picVals);
+                for (let i=0; i<picVals.length; i++) {
+                    let picture = picVals[i].name;
+                    console.log(picture + ' loaded');
+                    picList[i] = picture;
+                }
+            } else {
+                console.log('No Pic List');
+                set(ref(db,'/pics'),{
+                    'pic 1':{
+                        'name':'hugging_bear.jpg',
+                        'path':"pictures",
+                        'order':'1'
+                    }, 'pic 2':{
+                        'name':'le_double_fist.jpg',
+                        'path':"pictures",
+                        'order':'2'
+                    }, 'pic 3': {
+                        'name':'ST_Pat_Hat.jpg',
+                        'path':"pictures",
+                        'order':'3'
+                    }, 'pic 4': {
+                        'name':'mmcd_newyears.jpg',
+                        'path':"pictures",
+                        'order':'4'
+                    }
+                })
+            }
+        })
+    }
+    
     listGuests();
+    listPics();
 
     document.getElementById('rsvpName').addEventListener('change', function(){
         var guestName = document.getElementById('rsvpName').value;
@@ -145,7 +183,8 @@ function init() {
         //console.log(guestName);
         //console.log(guests[guestName]['email']);
         let guestInfo = get(ref(db, '/guests/'+guestName),(snapshot) => {})
-        if guestInfo[]
+        console.log(guestInfo);
+        //if guestInfo[]
         var rsvpD = confirm('Hi ' + guestName + ' are you ready to RSVP to \nDARNGEON CRAWL of NYC?' );
         if (rsvpD) {
             update(ref(db, '/guests/'+guestName),{
