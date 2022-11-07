@@ -4,7 +4,7 @@ import { getDatabase, ref, set, get, onValue, child, update, push} from "https:/
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from "https://www.gstatic.com/firebasejs/9.8.4/firebase-auth.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-analytics.js";
 import { getFirestore, collection, addDoc, getDocs  } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js"
-import { getStorage, ref as refST, listAll } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-storage.js";
+import { getStorage, ref as refST, listAll, uploadBytes } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-storage.js";
 //import * as functions from "https://www.gstatic.com/firebasejs/9.8.4/firebase-functions.js";
 
 
@@ -184,11 +184,12 @@ function init() {
         //console.log(guests);
         //console.log(guestName);
         //console.log(guests[guestName]['email']);
-        let guestInfo = get(ref(db, '/guests/'+guestName),(snapshot) => {})
+        var guestInfo;
+        get(ref(db, '/guests/'+guestName),(snapshot) => {guestInfo = Object.values(snapshot.val);})
         console.log(guestInfo);
         //if guestInfo[]
-        var rsvpD = confirm('Hi ' + guestName + ' are you ready to RSVP to \nDARNGEON CRAWL of NYC?' );
-        if (rsvpD) {
+        var rsvpING = confirm('Hi ' + guestName + ' are you ready to RSVP to \nDARNGEON CRAWL of NYC?' );
+        if (rsvpING) {
             update(ref(db, '/guests/'+guestName),{
                 'rsvp':true   
             });                
@@ -223,11 +224,7 @@ function init() {
         })
     }
 
-    document.getElementById('uploadPic').addEventListener('click', function () {
-        addPicToScroll();
-    });
-
-    setInterval(scroll, 3500) ;  
+    setInterval(scroll, 4500) ;  
         var setScroll = false;
       function scroll() {
         //console.log("scrolling");
@@ -241,7 +238,7 @@ function init() {
         }
     
 
-        function switchCarousel (i) {
+      function switchCarousel (i) {
             //console.log(i);
             var curr = i+1; 
             var next = curr+1;
@@ -261,45 +258,27 @@ function init() {
                 setScroll = false;
             } 
         }
-        
-
-        /* // Pic 1
-        if (buttons[0].getAttribute("checked") == "checked") {
-          //console.log(buttons[0].getAttribute("id") + " checked");
-          buttons[0].removeAttribute("checked");
-          buttons[1].setAttribute("checked", "checked");
-        // Pic 2
-        } else if (buttons[1].getAttribute("checked") == "checked") {
-          //console.log(buttons[1].getAttribute("id") + " checked");
-          buttons[1].removeAttribute("checked");
-          buttons[2].setAttribute("checked", "checked");
-        // Pic 3
-        } else if (buttons[2].getAttribute("checked") == "checked") {
-          //console.log(buttons[2].getAttribute("id") + " checked");
-          buttons[2].removeAttribute("checked");
-          buttons[3].setAttribute("checked", "checked");
-        //Pic 4
-        } else if (buttons[3].getAttribute("checked") == "checked") {
-          //console.log(buttons[3].getAttribute("id") + " checked");
-          buttons[3].removeAttribute("checked");
-          buttons[0].setAttribute("checked", "checked");
-        } */
       
 
     var picCount = 0;
-
-    document.getElementById('uploadPic').addEventListener('click', function(){
-        addPicToScroll();
+    
+    var picSelect = document.getElementById('newPicImg');
+    var picUpload = document.getElementById('uploadPic');
+    var picName = document.getElementById('newPicName');
+    picSelect.addEventListener('change', function(){
+        if (picSelect.value != null) {
+            picUpload.removeAttribute('disabled');
+        }
     })
 
+    picUpload.addEventListener('click', function(){
+        if (picName.innerHTML != null) {addPicToScroll();}
+        else {alert('Please name your picture');}
+    });
+
     function addPicToScroll () {
-        var picName = document.getElementById('newPicName');
-        var picImg = document.getElementById('newPicImg').value;
-
-
-    }
-
-    function addPicToScroll (pic) {
+        var picImg = picSelect.value;
+        uploadBytes(imagesRef, picImg).then((snapshot) => {console.log('Uploaded ' + picName.innerHTML)})
         //Picture Flipper
         var newPicInput = document.createElement("input");
         makeElements (newPicInput, "carousel-" + picCount+1, null,"carousel","carousel-open","type","radio", "hidden","");
@@ -313,7 +292,7 @@ function init() {
         newPicDiv.appendChild(newPicImg);
         document.getElementById("carousel-inner-ID").appendChild(newPicInput);
         document.getElementById("carousel-inner-ID").appendChild(newPicDiv);
-
+        picSelect.value, picName.value = "";
     }
         
 
