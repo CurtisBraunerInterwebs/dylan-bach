@@ -2,7 +2,7 @@
         html, body {
             margin: 0px;
             padding: 0px;
-            background-color: mintcream;
+            background-color: rgb(98, 114, 204);
         }
         .header {
               position: absolute;
@@ -209,7 +209,7 @@
     
         .carousel-item img {
             display: block;
-            height: auto;
+            height: 600px;
             max-width: 100%;
             background: rgba(0, 0, 0);
             margin:auto;
