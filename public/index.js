@@ -39,7 +39,7 @@ function init() {
       const fs = getFirestore(app);
       const storage = getStorage();
       const storeRef = refST(storage);
-      const imagesRef = refST(storage, '/pictures');
+      const imagesRef = refST(storage, '/pictures/');
       //console.log("init started");
       var user;
       window.location.hash = 'welcome';
@@ -53,7 +53,7 @@ function init() {
     function listFiles () {
         listAll(imagesRef).then((ref) => {
             //set(ref(db, '/pics'),{});
-            console.log(ref.items);
+            console.log(Object.values(ref.items));
         })
     }
 
@@ -75,7 +75,7 @@ function init() {
             }
         })
     }
-
+    var picCount = 0;
     emptyDB();
 
     function listGuests () {
@@ -150,6 +150,7 @@ function init() {
                     //console.log(picture + ' loaded');
                     picList[i] = picture;
                 }
+                picCount = picVals.length;
             } else {
                 console.log('No Pic List');
                 picCount = 4;
@@ -237,13 +238,12 @@ function init() {
             } 
         }
     
-
       function switchCarousel (i) {
             //console.log(i);
             var curr = i+1; 
             var next = curr+1;
             if (curr==picList.length) {
-                console.log('restart pic scroll');
+                //console.log('restart pic scroll');
                 next = 1;
             } 
             var currCaro = document.getElementById('carousel-'+curr);
@@ -259,12 +259,10 @@ function init() {
             } 
         }
       
-
-    var picCount = 0;
-    
     var picSelect = document.getElementById('newPicImg');
     var picUpload = document.getElementById('uploadPic');
     var picName = document.getElementById('newPicName');
+
     picSelect.addEventListener('change', function(){
         if (picSelect.value != null) {
             picUpload.removeAttribute('disabled');
@@ -272,29 +270,35 @@ function init() {
     })
 
     picUpload.addEventListener('click', function(){
-        if (picName.innerHTML != null) {addPicToScroll();}
-        else {alert('Please name your picture');}
+        addPicToScroll();
     });
 
     function addPicToScroll () {
-        var picImg = picSelect.value;
-        uploadBytes(imagesRef, picImg).then((snapshot) => {console.log('Uploaded ' + picName.innerHTML)})
+        var picImg = picSelect.files[0];
+        console.log(picImg.name);
+        var picRef = imagesRef.child('pictures/'+picImg.name);
+        console.log(picRef);
+        //picImg.name = picName.innerHTML;
+        console.log(picImg);
+        var labelList = document.getElementById("caro-ind-list");
+        picCount++;
+        uploadBytes(picRef, picImg);
         //Picture Flipper
         var newPicInput = document.createElement("input");
-        makeElements (newPicInput, "carousel-" + picCount+1, null,"carousel","carousel-open","type","radio", "hidden","");
+        makeElements (newPicInput, "carousel-" + picCount, null,"carousel","carousel-open","type","radio", "hidden","");
+        
         //Picture Container
         var newPicDiv = document.createElement("div");
         newPicDiv.setAttribute("class","carousel-item");
         newPicDiv.setAttribute("id","carousel-item-div");
         //Picture Path
         var newPicImg = document.createElement("img");
-        newPicImg.setAttribute("src","'pictures/"+pic);
+        newPicImg.setAttribute("src","pictures/" + picName.value);
         newPicDiv.appendChild(newPicImg);
-        document.getElementById("carousel-inner-ID").appendChild(newPicInput);
-        document.getElementById("carousel-inner-ID").appendChild(newPicDiv);
+        document.getElementById("carousel-inner-ID").insertBefore(newPicDiv, labelList);
+        document.getElementById("carousel-inner-ID").insertBefore(newPicInput, newPicDiv);
         picSelect.value, picName.value = "";
     }
-        
 
     function makeElements (newEl, id, inHTML, name, clss, rand, randVal, rand2, rand2Val) {
         if (id != undefined) {newEl.setAttribute('id', id); }
