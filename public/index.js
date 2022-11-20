@@ -6,6 +6,7 @@ import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-
 import { getFirestore, collection, addDoc, getDocs  } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js"
 import { getStorage, ref as refST, listAll, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-storage.js";
 //import * as functions from "https://www.gstatic.com/firebasejs/9.8.4/firebase-functions.js";
+//import *  as google from "https://maps.googleapis.com/maps/api/js";
 
 
 
@@ -40,6 +41,7 @@ function init() {
       const storage = getStorage();
       const storeRef = refST(storage);
       const imagesRef = refST(storage, '/pictures/');
+      const guestRef = ref(db, '/guests/');
       //console.log("init started");
       var user;
       //window.location.hash = 'welcome';
@@ -59,7 +61,7 @@ function init() {
         })
     }
 
-    listFiles();
+    //listFiles();
 
     function emptyDB(){
         get(ref(db,'/')).then((snapshot) => {
@@ -184,25 +186,23 @@ function init() {
     listGuests();
     listPics();
 
+    function setUser (name){
+        onValue(ref(db, '/guests/'+name), (snapshot) => {
+            user = snapshot.val()
+            console.log(user);
+        });
+    }
+
     document.getElementById('rsvpName').addEventListener('change', function(){
         var guestName = document.getElementById('rsvpName').value;
         var guestInfo;
-        get(ref(db, '/guests/'+guestName),(snapshot) => {
-            if (snapshot.exists()) {
-            console.log(Object.values(snapshot.val));
-            } else {
-                console.log('Issue with rsvp grab');
-            }
-        })
-        //console.log(guestInfo);
-        //if guestInfo[]
-        
-        var rsvpING = confirm('Hi ' + guestName + ' are you ready to RSVP to \nDARNGEON CRAWL of NYC?' );
-        if (rsvpING) {
-            update(ref(db, '/guests/'+guestName),{
-                'rsvp':true   
-            });                
-            console.log(guestName + ' has RSVP\'D');}
+        setUser(guestName);
+            var rsvpING = confirm('Hi ' + guestName + ' are you ready to RSVP to \nDARNGEON CRAWL of NYC?' );
+            if (rsvpING) {
+                update(ref(db, '/guests/'+guestName),{
+                    'rsvp':true   
+                });            
+                console.log(guestName + ' has RSVP\'D');}
     });
 
     document.getElementById('addGuest').addEventListener('click', function () {
@@ -267,9 +267,9 @@ function init() {
 
     function getPicUrl(num, name, upload) {
         getDownloadURL(refST(storage, '/pictures/'+name)).then((url)=>{
-            console.log(url);
+            //console.log(url);
             document.getElementById('caroImg-'+num).setAttribute('src',url);
-            if (upload) {picSelect.value = "";}
+            //if (upload) {picSelect.value = "";}
         });
     }
 
@@ -290,6 +290,7 @@ function init() {
         newCaroImg = document.createElement('img');
         
         newCaroImg.setAttribute('id','caroImg-'+caroNum);
+        newCaroImg.setAttribute('class','img-responsive');
         newCaroDiv.appendChild(newCaroImg);
         document.getElementById("carousel-inner-ID").insertBefore(newCaroDiv, document.getElementById("caro-ind-list"));
         document.getElementById("carousel-inner-ID").insertBefore(newSwitch, newCaroDiv);  
@@ -346,4 +347,13 @@ function init() {
         if (rand2 != undefined) {newEl.setAttribute(rand2, rand2Val); }
         if (rand3 != undefined) {newEl.setAttribute(rand3, rand3Val);}
       }
+
+    //   function myMap() {
+    //     var mapProp= {
+    //       center:new google.maps.LatLng(51.508742,-0.120850),
+    //       zoom:5,
+    //     };
+    //     var map = new google.maps.Map(document.getElementById("mapDiv"),mapProp);
+    //     }
+    // myMap();
 }
