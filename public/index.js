@@ -5,6 +5,7 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, si
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-analytics.js";
 import { getFirestore, collection, addDoc, getDocs  } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js"
 import { getStorage, ref as refST, listAll, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-storage.js";
+import { Button } from "bootstrap";
 //import * as functions from "https://www.gstatic.com/firebasejs/9.8.4/firebase-functions.js";
 //import *  as google from "https://maps.googleapis.com/maps/api/js";
 
@@ -229,24 +230,24 @@ function init() {
         var broRow = document.createElement('tr'); broRow.setAttribute('class',"broRow"); broRow.setAttribute('id',bachInfo.name + "-row");
         var broName = document.createElement('td'); broName.setAttribute('class',"col bachList"); broRow.appendChild(broName);
         var nameIn = document.createElement('p'); nameIn.setAttribute('type',"text"); nameIn.innerHTML = bachInfo.name; broName.appendChild(nameIn);
-        var broEmail = document.createElement('td'); broEmail.setAttribute('class',"col bachList form-control"); broRow.appendChild(broEmail);
-        var emailIn = document.createElement('input'); emailIn.setAttribute('type',"text"); emailIn.value = bachInfo.email; broEmail.appendChild(emailIn);
-        var broPhone = document.createElement('td'); broPhone.setAttribute('class',"col bachList form-control");  broRow.appendChild(broPhone);
-        var phoneIn = document.createElement('input'); phoneIn.setAttribute('type',"text"); phoneIn.value = bachInfo.hone; broPhone.appendChild(phoneIn);
-        var broRSVP = document.createElement('td'); broRSVP.setAttribute('class',"col bachList form-control");  broRow.appendChild(broRSVP);
-        var rsvpIn = document.createElement('input'); rsvpIn.setAttribute('type',"text"); rsvpIn.value = bachInfo.rsvp; broRSVP.appendChild(rsvpIn);
-
+        var broEmail = document.createElement('td'); broEmail.setAttribute('class',"col "); broRow.appendChild(broEmail);
+        var emailIn = document.createElement('input'); emailIn.setAttribute('type',"text"); emailIn.setAttribute('class',"bachList form-control"); emailIn.value = bachInfo.email; broEmail.appendChild(emailIn);
+        var broPhone = document.createElement('td'); broPhone.setAttribute('class',"col ");  broRow.appendChild(broPhone);
+        var phoneIn = document.createElement('input'); phoneIn.setAttribute('type',"text"); phoneIn.setAttribute('class',"bachList form-control"); phoneIn.value = bachInfo.phone; broPhone.appendChild(phoneIn);
+        var broRSVP = document.createElement('td'); broRSVP.setAttribute('class',"col ");  broRow.appendChild(broRSVP);
+        var rsvpIn = document.createElement('input'); rsvpIn.setAttribute('type',"text"); rsvpIn.setAttribute('class',"bachList form-control"); rsvpIn.value = bachInfo.rsvp; broRSVP.appendChild(rsvpIn);
+        var svCell = document.createElement('td'); svCell.setAttribute('class',"col");
+        var svBtn = document.createElement('button'); svBtn.setAttribute('type',"button"); svBtn.setAttribute('class',"btn btn-success svBroRow"); svBtn.setAttribute('disabled',""); svBtn.innerHTML = "Save"; svCell.appendChild(svBtn);
         broTable.appendChild(broRow);
     }
 
-    /* document.getElementsByClassName('bachList').addEventListener('focusout',saveBachs);
+    document.getElementsByClassName('bachList').addEventListener('change', function () {this.parentNode.parentNode.lastChild.removeAttribute('disabled');} );
+
+    /* document.getElementsByClassName('svBroRow').addEventListener('click',saveBachs);
 
     function saveBachs () {
-        var broRows = document.getElementsByClassName('broRow');
-        for (let i=0; i<broRows.length; i++) {
-            
-        }
-    } */
+        this.parentNode.parentNode;
+    }  */
 
     
 
