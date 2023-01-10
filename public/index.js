@@ -115,6 +115,7 @@ function init() {
                     nameOpt.setAttribute('value',guest);
                     nameOpt.innerHTML = guest;
                     names.add(nameOpt);
+                    listBachs(guestVals[i]);
                 }
                 //console.log(guestList);
             } else {
@@ -222,6 +223,32 @@ function init() {
                 'rsvp':rsvp
         })
     }
+
+    function listBachs (bachInfo) {
+        var broTable = document.getElementById('contTblBdy');
+        var broRow = document.createElement('tr'); broRow.setAttribute('class',"broRow"); broRow.setAttribute('id',bachInfo.name + "-row");
+        var broName = document.createElement('td'); broName.setAttribute('class',"col bachList"); broRow.appendChild(broName);
+        var nameIn = document.createElement('p'); nameIn.setAttribute('type',"text"); nameIn.innerHTML = bachInfo.name; broName.appendChild(nameIn);
+        var broEmail = document.createElement('td'); broEmail.setAttribute('class',"col bachList form-control"); broRow.appendChild(broEmail);
+        var emailIn = document.createElement('input'); emailIn.setAttribute('type',"text"); emailIn.value = bachInfo.email; broEmail.appendChild(emailIn);
+        var broPhone = document.createElement('td'); broPhone.setAttribute('class',"col bachList form-control");  broRow.appendChild(broPhone);
+        var phoneIn = document.createElement('input'); phoneIn.setAttribute('type',"text"); phoneIn.value = bachInfo.hone; broPhone.appendChild(phoneIn);
+        var broRSVP = document.createElement('td'); broRSVP.setAttribute('class',"col bachList form-control");  broRow.appendChild(broRSVP);
+        var rsvpIn = document.createElement('input'); rsvpIn.setAttribute('type',"text"); rsvpIn.value = bachInfo.rsvp; broRSVP.appendChild(rsvpIn);
+
+        broTable.appendChild(broRow);
+    }
+
+    /* document.getElementsByClassName('bachList').addEventListener('focusout',saveBachs);
+
+    function saveBachs () {
+        var broRows = document.getElementsByClassName('broRow');
+        for (let i=0; i<broRows.length; i++) {
+            
+        }
+    } */
+
+    
 
     setInterval(scroll, 4500) ;  
         var setScroll = false;
