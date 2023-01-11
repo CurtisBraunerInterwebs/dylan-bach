@@ -5,7 +5,7 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, si
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-analytics.js";
 import { getFirestore, collection, addDoc, getDocs  } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js"
 import { getStorage, ref as refST, listAll, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-storage.js";
-import { Button } from "bootstrap";
+//import { Button } from "bootstrap";
 //import * as functions from "https://www.gstatic.com/firebasejs/9.8.4/firebase-functions.js";
 //import *  as google from "https://maps.googleapis.com/maps/api/js";
 
@@ -241,7 +241,7 @@ function init() {
         broTable.appendChild(broRow);
     }
 
-    document.getElementsByClassName('bachList').addEventListener('change', function () {this.parentNode.parentNode.lastChild.removeAttribute('disabled');} );
+    //document.getElementsByClassName('bachList').addEventListener('change', function () {this.parentNode.parentNode.lastChild.removeAttribute('disabled');} );
 
     /* document.getElementsByClassName('svBroRow').addEventListener('click',saveBachs);
 
@@ -251,7 +251,7 @@ function init() {
 
     
 
-    setInterval(scroll, 4500) ;  
+    /* setInterval(scroll, 4500) ;  
         var setScroll = false;
       function scroll() {
         //check which is checked
@@ -281,7 +281,7 @@ function init() {
       
     var picSelect = document.getElementById('newPicImg');
     var picUpload = document.getElementById('uploadPic');
-
+ */
     picSelect.addEventListener('change', function(){
         if (picSelect.value != null) {
             //console.log(refST(storage, '/pictures/'+picSelect.files[0].name));
@@ -304,17 +304,19 @@ function init() {
     function buildCaro (i, name) {
         var caroNum = i+1; //console.log(caroNum);
         var caroRef = refST(storage, '/pictures/'+name); //console.log(caroRef);
+        var activeImg;
+        if (i==0) {activeImg = "active";} else {activeImg = "";};
         //Build carousel elements
         var newSwitch, newCaroDiv, newCaroImg;
         newSwitch = document.createElement('input');
         makeElements(newSwitch, "carousel-"+caroNum,"", "carouselSwitch"+caroNum, "carousel-open",'type','radio',"hidden","",'aria-hidden',"true");
         //Set first carousel input to active
-        if (caroNum === 1) {
-            newSwitch.setAttribute("checked","checked"); 
+        // if (caroNum === 1) {
+        //     newSwitch.setAttribute("checked","checked"); 
             
-        } 
+        // } 
         newCaroDiv = document.createElement('div');
-        makeElements(newCaroDiv,'caroDiv'+caroNum,"","carouselDiv","carousel-item",null,"",null,"",null,"");
+        makeElements(newCaroDiv,'caroDiv'+caroNum,"","carouselDiv","carousel-item " + activeImg,null,"",null,"",null,"");
         newCaroImg = document.createElement('img');
         
         newCaroImg.setAttribute('id','caroImg-'+caroNum);
