@@ -185,11 +185,21 @@
             text-align: -webkit-center;
         }
 
-        .carousel-inner {
+        .carousel-item img {
+            display: block;
+            height: 600px;
+            max-width: 100%;
+            background: rgba(0, 0, 0);
+            margin:auto;
+            
+  
+        }
+
+        /* .carousel-inner {
             position: relative;
             overflow: hidden;
             width: 100%;
-            /* background: burlywood; */
+            /* background: burlywood; 
             animation: scroll 40s linear infinite;
             
         }
@@ -282,7 +292,7 @@
     
         .carousel-bullet:hover {
             color: #333;
-        }
+        } */
     
         #carousel-1:checked ~ .control-1 ~ .carousel-indicators li:nth-child(1) .carousel-bullet,
         #carousel-2:checked ~ .control-2 ~ .carousel-indicators li:nth-child(2) .carousel-bullet,

@@ -20,26 +20,20 @@
       <nav class="navbar navbar-default">
         <h1 class="navtitle" id="navtitle"> <span id="addGuest">Welcome</span> to the Barngeon Crawl</h1>
       </nav>
-      <div class="carousel slide" id="introCarousel" data-bs-ride="carousel">
+      <div id="introCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner" id="carousel-inner-ID">
-            <!-- <ol class="carousel-indicators" id="caro-ind-list">
-                <li>
-                    <label for="carousel-1" class="carousel-bullet">•</label>
-                </li>
-                <li>
-                    <label for="carousel-2" class="carousel-bullet">•</label>
-                </li>
-                <li>
-                    <label for="carousel-3" class="carousel-bullet">•</label>
-                </li>
-                <li>
-                    <label for="carousel-4" class="carousel-bullet">•</label>
-                </li>
-            </ol> -->
         </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#introCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon text-dark" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#introCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
     </header>
-    <div class="rsvp">
+    <div class="rsvp container">
       <form class="rsvpForm">
         <fieldset id="rsvpFS">
           <label for="rsvpName">Who are you?</label>
@@ -63,61 +57,33 @@
 
     </div>
     
-    <div name="contactList" class="container ">
-      
-        <div class="accordian-body" id="contTblCol">
+    <div name="contactList" class="container accordian " id="broList">
+      <div class="accordian-item">
+        <div class="accordian-header" id="contTblHd">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#contTblCol" aria-expanded="true" aria-controls="contTblCol">
+            Bro List   <i> If you do not see your name, text or email Curtis. </i>
+          </button>
+        </div>
+      </div>
+      <div id="contTblCol" class="accordion-collapse collapse show" aria-labelledby="contTblHd" data-bs-parent="#broList">
+        <div class="accordian-body">
           <table class="table table-striped table-hover">
             <thead>
               <tr>
-                <th scope="col">name</th>
-                <th scope="col">email</th>
-                <th scope="col">phone</th>
+                <th scope="col">NAME</th>
+                <th scope="col">EMAIL</th>
+                <th scope="col">PHONE</th>
                 <th scope="col">RSVP</th>
               </tr>
             </thead>
             <tbody id="contTblBdy">
-             <!--  <tr>
-                <td>A Name</td>
-                <td>Email@email.com</td>
-                <td>778-877-7337</td>
-                <td>Yes</td>
-              </tr> -->
             </tbody>
           </table>
         </div>
         If you do not see your name, text or email Curtis.
+      </div>
     </div>
-
-    <!--
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-1">.col-md-1</div>
-        <div class="col-md-1">.col-md-1</div>
-        <div class="col-md-1">.col-md-1</div>
-        <div class="col-md-1">.col-md-1</div>
-        <div class="col-md-1">.col-md-1</div>
-        <div class="col-md-1">.col-md-1</div>
-        <div class="col-md-1">.col-md-1</div>
-        <div class="col-md-1">.col-md-1</div>
-        <div class="col-md-1">.col-md-1</div>
-        <div class="col-md-1">.col-md-1</div>
-        <div class="col-md-1">.col-md-1</div>
-        <div class="col-md-1">.col-md-1</div>
-      </div>
-      <div class="row">
-        <div class="col-md-8">.col-md-8</div>
-        <div class="col-md-4">.col-md-4</div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">.col-md-4</div>
-        <div class="col-md-4">.col-md-4</div>
-        <div class="col-md-4">.col-md-4</div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">.col-md-6</div>
-        <div class="col-md-6">.col-md-6</div>
-      </div>
-    </div> -->
+  
     
   </body>
 </html>

@@ -278,10 +278,10 @@ function init() {
                 setScroll = false;
             } 
         }
-      
+      */
     var picSelect = document.getElementById('newPicImg');
     var picUpload = document.getElementById('uploadPic');
- */
+ 
     picSelect.addEventListener('change', function(){
         if (picSelect.value != null) {
             //console.log(refST(storage, '/pictures/'+picSelect.files[0].name));
@@ -302,14 +302,14 @@ function init() {
     }
 
     function buildCaro (i, name) {
-        var caroNum = i+1; //console.log(caroNum);
+        var caroNum = i+1; console.log(caroNum);
         var caroRef = refST(storage, '/pictures/'+name); //console.log(caroRef);
         var activeImg;
-        if (i==0) {activeImg = "active";} else {activeImg = "";};
+        if (i==0) {activeImg = "active"; } else {activeImg = "";};
         //Build carousel elements
-        var newSwitch, newCaroDiv, newCaroImg;
-        newSwitch = document.createElement('input');
-        makeElements(newSwitch, "carousel-"+caroNum,"", "carouselSwitch"+caroNum, "carousel-open",'type','radio',"hidden","",'aria-hidden',"true");
+        var newCaroDiv, newCaroImg;
+        // newSwitch = document.createElement('input');
+        // makeElements(newSwitch, "carousel-"+caroNum,"", "carouselSwitch"+caroNum, "carousel-open",'type','radio',"hidden","",'aria-hidden',"true");
         //Set first carousel input to active
         // if (caroNum === 1) {
         //     newSwitch.setAttribute("checked","checked"); 
@@ -320,10 +320,10 @@ function init() {
         newCaroImg = document.createElement('img');
         
         newCaroImg.setAttribute('id','caroImg-'+caroNum);
-        newCaroImg.setAttribute('class','img-responsive');
+        newCaroImg.setAttribute('class','img-responsive mx-auto d-block shadow');
         newCaroDiv.appendChild(newCaroImg);
         document.getElementById("carousel-inner-ID").insertBefore(newCaroDiv, document.getElementById("caro-ind-list"));
-        document.getElementById("carousel-inner-ID").insertBefore(newSwitch, newCaroDiv);  
+        //document.getElementById("carousel-inner-ID").insertBefore(newSwitch, newCaroDiv);  
         getPicUrl(caroNum, name, false);
     }
 
