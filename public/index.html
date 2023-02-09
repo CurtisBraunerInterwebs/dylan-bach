@@ -57,16 +57,11 @@
 
     </div>
     
-    <div name="contactList" class="container accordian " id="broList">
-      <div class="accordian-item">
-        <div class="accordian-header" id="contTblHd">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#contTblCol" aria-expanded="true" aria-controls="contTblCol">
-            Bro List   <i> If you do not see your name, text or email Curtis. </i>
+    <div name="contactList" class="container" id="broList">
+          <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#contTblCol" aria-expanded="false" aria-controls="contTblCol">
+            Bro List (check your info)
           </button>
-        </div>
-      </div>
-      <div id="contTblCol" class="accordion-collapse collapse show" aria-labelledby="contTblHd" data-bs-parent="#broList">
-        <div class="accordian-body">
+      <div id="contTblCol" class="collapse" data-bs-parent="#broList">
           <table class="table table-striped table-hover">
             <thead>
               <tr>
@@ -79,7 +74,6 @@
             <tbody id="contTblBdy">
             </tbody>
           </table>
-        </div>
         If you do not see your name, text or email Curtis.
       </div>
     </div>

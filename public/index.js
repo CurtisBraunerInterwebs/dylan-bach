@@ -222,33 +222,57 @@ function init() {
                 'role':role,
                 'email':email,
                 'rsvp':rsvp
-        })
+        });
     }
 
     function listBachs (bachInfo) {
         var broTable = document.getElementById('contTblBdy');
         var broRow = document.createElement('tr'); broRow.setAttribute('class',"broRow"); broRow.setAttribute('id',bachInfo.name + "-row");
-        var broName = document.createElement('td'); broName.setAttribute('class',"col bachList"); broRow.appendChild(broName);
-        var nameIn = document.createElement('p'); nameIn.setAttribute('type',"text"); nameIn.innerHTML = bachInfo.name; broName.appendChild(nameIn);
+        var broName = document.createElement('td'); broName.setAttribute('class',"col nameCell"); broRow.appendChild(broName);
+        var nameIn = document.createElement('p'); nameIn.setAttribute('type',"text"); nameIn.setAttribute('class',"bachList nameIn"); nameIn.innerHTML = bachInfo.name; broName.appendChild(nameIn);
         var broEmail = document.createElement('td'); broEmail.setAttribute('class',"col "); broRow.appendChild(broEmail);
-        var emailIn = document.createElement('input'); emailIn.setAttribute('type',"text"); emailIn.setAttribute('class',"bachList form-control"); emailIn.value = bachInfo.email; broEmail.appendChild(emailIn);
+        var emailIn = document.createElement('input'); emailIn.setAttribute('type',"text"); emailIn.setAttribute('class',"bachList form-control emailIn "); emailIn.value = bachInfo.email; broEmail.appendChild(emailIn);
         var broPhone = document.createElement('td'); broPhone.setAttribute('class',"col ");  broRow.appendChild(broPhone);
-        var phoneIn = document.createElement('input'); phoneIn.setAttribute('type',"text"); phoneIn.setAttribute('class',"bachList form-control"); phoneIn.value = bachInfo.phone; broPhone.appendChild(phoneIn);
+        var phoneIn = document.createElement('input'); phoneIn.setAttribute('type',"text"); phoneIn.setAttribute('class',"bachList form-control phoneIn"); phoneIn.value = bachInfo.phone; broPhone.appendChild(phoneIn);
         var broRSVP = document.createElement('td'); broRSVP.setAttribute('class',"col ");  broRow.appendChild(broRSVP);
-        var rsvpIn = document.createElement('input'); rsvpIn.setAttribute('type',"text"); rsvpIn.setAttribute('class',"bachList form-control"); rsvpIn.value = bachInfo.rsvp; broRSVP.appendChild(rsvpIn);
-        var svCell = document.createElement('td'); svCell.setAttribute('class',"col");
-        var svBtn = document.createElement('button'); svBtn.setAttribute('type',"button"); svBtn.setAttribute('class',"btn btn-success svBroRow"); svBtn.setAttribute('disabled',""); svBtn.innerHTML = "Save"; svCell.appendChild(svBtn);
+        var rsvpIn = document.createElement('input'); rsvpIn.setAttribute('type',"text"); rsvpIn.setAttribute('class',"bachList form-control rsvpIn"); rsvpIn.value = bachInfo.rsvp; broRSVP.appendChild(rsvpIn);
+        //var svCell = document.createElement('td'); svCell.setAttribute('class',"col"); broRow.appendChild(svCell);
+        //var svBtn = document.createElement('button'); svBtn.setAttribute('type',"button"); svBtn.setAttribute('class',"btn btn-success svBroRow"); svBtn.setAttribute('disabled',""); svBtn.innerHTML = "Save"; svCell.appendChild(svBtn);
         broTable.appendChild(broRow);
     }
 
-    //document.getElementsByClassName('bachList').addEventListener('change', function () {this.parentNode.parentNode.lastChild.removeAttribute('disabled');} );
+    var bachList = document.getElementsByClassName('bachList');
+    
+    for (let i=0; i<bachList.length; i++) {
+        console.log('change option loaded'); 
+        bachList[i].addEventListener("change", (event) => {
+            console.log('changed');
+            event.target.parentElement.parentElement.lastElementChild.lastElementChild.removeAttribute('disabled');} );    
+    }
+    //var svBroRow = document.getElementsByClassName('svBroRow'); for (let i=0; i<svBroRow.length; i++) { svBroRow[i].addEventListener("click",checkPar); }
 
-    /* document.getElementsByClassName('svBroRow').addEventListener('click',saveBachs);
+    /* $('.svBroRow').click(function(){
+        var details = $(this).closest('.broRow').find('.col');
+        details.each(function(){
+            $(this).find('input').val()
+        });
+    }); */
 
-    function saveBachs () {
-        this.parentNode.parentNode;
-    }  */
+    function checkPar () {
+        console.log(this.parentElement.parentElement);
+    }
+    
+    //On focus out, save changed date
 
+    $('.bachList').blur(function(){
+        console.log("Clicked off something");
+        var name = $(this).parent().siblings('.nameCell').text;
+        var type = $(this).attr("name");
+        var value = $(this).val();
+        update(ref(db,'/guests/' + name),{
+            [type]:value
+        });
+    });
     
 
     /* setInterval(scroll, 4500) ;  
@@ -302,7 +326,7 @@ function init() {
     }
 
     function buildCaro (i, name) {
-        var caroNum = i+1; console.log(caroNum);
+        var caroNum = i+1; //console.log(caroNum);
         var caroRef = refST(storage, '/pictures/'+name); //console.log(caroRef);
         var activeImg;
         if (i==0) {activeImg = "active"; } else {activeImg = "";};
