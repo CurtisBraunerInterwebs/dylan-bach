@@ -43,7 +43,7 @@ function init() {
       const storeRef = refST(storage);
       const imagesRef = refST(storage, '/pictures/');
       const guestRef = ref(db, '/guests/');
-      //console.log("init started");
+      
       var user;
       //window.location.hash = 'welcome';
       //var contactReady = true;
@@ -231,78 +231,28 @@ function init() {
         var broName = document.createElement('td'); broName.setAttribute('class',"col nameCell"); broRow.appendChild(broName);
         var nameIn = document.createElement('p'); nameIn.setAttribute('type',"text"); nameIn.setAttribute('class',"bachList nameIn"); nameIn.innerHTML = bachInfo.name; broName.appendChild(nameIn);
         var broEmail = document.createElement('td'); broEmail.setAttribute('class',"col "); broRow.appendChild(broEmail);
-        var emailIn = document.createElement('input'); emailIn.setAttribute('type',"text"); emailIn.setAttribute('class',"bachList form-control emailIn "); emailIn.value = bachInfo.email; broEmail.appendChild(emailIn);
+        var emailIn = document.createElement('input'); emailIn.setAttribute('type',"text"); emailIn.setAttribute('class',"bachList form-control emailIn "); emailIn.setAttribute('name',"email"); emailIn.value = bachInfo.email; broEmail.appendChild(emailIn);
         var broPhone = document.createElement('td'); broPhone.setAttribute('class',"col ");  broRow.appendChild(broPhone);
-        var phoneIn = document.createElement('input'); phoneIn.setAttribute('type',"text"); phoneIn.setAttribute('class',"bachList form-control phoneIn"); phoneIn.value = bachInfo.phone; broPhone.appendChild(phoneIn);
+        var phoneIn = document.createElement('input'); phoneIn.setAttribute('type',"text"); phoneIn.setAttribute('class',"bachList form-control phoneIn"); phoneIn.setAttribute('name',"phone"); phoneIn.value = bachInfo.phone; broPhone.appendChild(phoneIn);
         var broRSVP = document.createElement('td'); broRSVP.setAttribute('class',"col ");  broRow.appendChild(broRSVP);
-        var rsvpIn = document.createElement('input'); rsvpIn.setAttribute('type',"text"); rsvpIn.setAttribute('class',"bachList form-control rsvpIn"); rsvpIn.value = bachInfo.rsvp; broRSVP.appendChild(rsvpIn);
-        //var svCell = document.createElement('td'); svCell.setAttribute('class',"col"); broRow.appendChild(svCell);
-        //var svBtn = document.createElement('button'); svBtn.setAttribute('type',"button"); svBtn.setAttribute('class',"btn btn-success svBroRow"); svBtn.setAttribute('disabled',""); svBtn.innerHTML = "Save"; svCell.appendChild(svBtn);
+        var rsvpIn = document.createElement('input'); rsvpIn.setAttribute('type',"text"); rsvpIn.setAttribute('class',"bachList form-control rsvpIn"); rsvpIn.setAttribute('name',"rsvp"); rsvpIn.value = bachInfo.rsvp; broRSVP.appendChild(rsvpIn);
         broTable.appendChild(broRow);
     }
+  
+    //On focus out, save changed info
 
-    var bachList = document.getElementsByClassName('bachList');
-    
-    for (let i=0; i<bachList.length; i++) {
-        console.log('change option loaded'); 
-        bachList[i].addEventListener("change", (event) => {
-            console.log('changed');
-            event.target.parentElement.parentElement.lastElementChild.lastElementChild.removeAttribute('disabled');} );    
-    }
-    //var svBroRow = document.getElementsByClassName('svBroRow'); for (let i=0; i<svBroRow.length; i++) { svBroRow[i].addEventListener("click",checkPar); }
-
-    /* $('.svBroRow').click(function(){
-        var details = $(this).closest('.broRow').find('.col');
-        details.each(function(){
-            $(this).find('input').val()
-        });
-    }); */
-
-    function checkPar () {
-        console.log(this.parentElement.parentElement);
-    }
-    
-    //On focus out, save changed date
-
-    $('.bachList').blur(function(){
-        console.log("Clicked off something");
-        var name = $(this).parent().siblings('.nameCell').text;
+    $(document).on("blur", ".bachList", function(){
+        //console.log("Clicked off something");
+        var parent = $(this).parent();
+        var name = $(parent).siblings('.nameCell').text();
         var type = $(this).attr("name");
         var value = $(this).val();
+        //console.log(name + " " + type + " " + value);
         update(ref(db,'/guests/' + name),{
             [type]:value
         });
     });
     
-
-    /* setInterval(scroll, 4500) ;  
-        var setScroll = false;
-      function scroll() {
-        //check which is checked
-        for (let i=0; i<picList.length; i++) {
-                switchCarousel(i);
-                if (setScroll) {break;}
-            } 
-        }
-    
-      function switchCarousel (i) {
-            //console.log(i);
-            var curr = i+1; 
-            var next = curr+1;
-            if (curr==picList.length) { //console.log('restart pic scroll'); 
-                next = 1;
-            } 
-            var currCaro = document.getElementById('carousel-'+curr);
-            var nextCaro = document.getElementById('carousel-'+next);
-            if (currCaro.getAttribute("checked") == "checked") { 
-               currCaro.removeAttribute("checked");
-               nextCaro.setAttribute("checked", "checked");
-                setScroll = true;
-            } else {
-                setScroll = false;
-            } 
-        }
-      */
     var picSelect = document.getElementById('newPicImg');
     var picUpload = document.getElementById('uploadPic');
  
