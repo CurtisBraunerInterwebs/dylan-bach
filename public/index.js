@@ -252,6 +252,9 @@ function init() {
             [type]:value
         });
     });
+
+    
+    //$("input[value='Hot Fuzz']")
     
     var picSelect = document.getElementById('newPicImg');
     var picUpload = document.getElementById('uploadPic');
