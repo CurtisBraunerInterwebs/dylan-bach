@@ -25,6 +25,32 @@ const firebaseConfig = {
     appId: "1:382846390451:web:ee631f5ddc9c02db08a0c6",
     measurementId: "G-DLFKRF88QQ"
   };
+
+function initMap() {
+    var newLat = $("#newPinLat").val();
+    var newLang = $("#newPinLang").val();
+    var pinTtl = $("#newPnTtl").val();
+    const myLatLng = { lat: 41.701040, lng: -72.320160 };
+    var newPin = { lat: parseFloat(newLat), lng: parseFloat(newLang) };
+    
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 41.701040, lng: -72.320160},
+      zoom: 8
+    });
+    new google.maps.Marker({
+        position: myLatLng,
+        map,
+        title: "Australia",
+      });
+
+    if(newLat !== "" || newLang !=="") {
+    new google.maps.Marker({
+        position: newPin,
+        map,
+        title: pinTtl,
+      });
+    }
+  }
   
 
 window.addEventListener('DOMContentLoaded', function () {
@@ -81,7 +107,7 @@ function init() {
         })
     }
     var picCount = 0;
-    emptyDB();
+    //emptyDB();
 
     function listGuests () {
         //console.log('listing guests');
@@ -254,6 +280,8 @@ function init() {
     });
 
     
+
+    
     //$("input[value='Hot Fuzz']")
     
     var picSelect = document.getElementById('newPicImg');
@@ -277,6 +305,11 @@ function init() {
             //if (upload) {picSelect.value = "";}
         });
     }
+
+    function getMap() {
+        
+    }
+    
 
     function buildCaro (i, name) {
         var caroNum = i+1; //console.log(caroNum);
