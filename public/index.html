@@ -7,6 +7,48 @@
     <link rel="stylesheet" href="style.css" />
     <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css" /> -->
     <script type="module" defer src="index.js"></script>
+    <script>
+      function initMap(locs) {
+          var newLat = $("#newBarLat").val();
+          var newLang = $("#newBarLong").val();
+          var pinTtl = $("#newStartName").val();
+          const myLatLng = { lat: 40.78147982626637, lng: -73.956249648968 };
+          var newPin = { lat: parseFloat(newLat), lng: parseFloat(newLang) };
+          
+          var map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 40.7781522, lng: -73.9479239},
+            zoom: 8
+          });
+          new google.maps.Marker({
+              position: myLatLng,
+              map,
+              title: "Dylan's Appt",
+            });
+
+          if(newLat !== "" || newLang !=="") {
+          new google.maps.Marker({
+              position: newPin,
+              map,
+              title: pinTtl,
+            });
+          }
+
+          if(locs !== undefined) {
+              for (let i= 0; i<locs.length; i++) {
+                  var loc = locs[i];
+                  console.log(loc);
+                  var newLoc = { lat: parseFloat(loc.lat), lng: parseFloat(loc.long)}
+                  new google.maps.Marker({
+                      position: newLoc,
+                      map,
+                      title: loc.name,
+                    });
+                    console.log('adding '+ loc.name)
+                  }
+          }
+      }
+    </script>
+
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDllRXu0Nmvm_VzH6Zpk4Q7NySX_roRtB0&callback=initMap"></script>    
     <!-- <link type="text/css"  rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/4.0.0/firebaseui.css"/> -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.8.3.min.js"></script>
@@ -18,10 +60,12 @@
   </head>
   <body >
     <header class="container">
-      <nav class="navbar navbar-default">
-        <h1 class="navtitle" id="navtitle"> <span id="addGuest">Welcome</span> to the Barngeon Crawl - July 22<sup>nd</sup> 2023</h1>
+      <div class="container-lg">
+        <h1 class="" id="navtitle"> <span id="addGuest">Welcome</span> to the Barngeon <span id="addBar">Crawl</span> - July 22<sup>nd</sup> 2023 </h1> 
+        <br> 
+        <h2 class="text-center">Noon to Midnight</h2>
         <!-- <a target="_blank" href="https://calendar.google.com/calendar/event?action=TEMPLATE&amp;tmeid=MzB2Zjk1dGlrcGFtZHRzN2xnZ25qdGYxNXIgY3JiczEyMzRAbQ&amp;tmsrc=crbs1234%40gmail.com"><img border="0" src="https://www.google.com/calendar/images/ext/gc_button1_en.gif"></a> -->
-      </nav>
+      </div>
       <div id="introCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner" id="carousel-inner-ID">
         </div>
@@ -46,7 +90,9 @@
           </select>
         </fieldset>
       </form>
+    
     </div>
+    <br>
     <div class="imageUpload">
       <form id="imageForm">
         
@@ -55,31 +101,58 @@
         
       </form>
     </div>
-    <div class="map" id="mapDiv">
-
+    <br>
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#mapDiv" aria-expanded="false" aria-controls="mapDiv">
+      Adventure Map
+    </button>
+    <div class="map collapse" id="mapDiv">
+      <div id="mapCont" style="width:100%; height:100%;">
+        <div id="map" style="clear:both; height:1000px;"></div>
+      </div>
     </div>
-    
+    <br>
     <div name="contactList" class="container" id="broList">
           <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#contTblCol" aria-expanded="false" aria-controls="contTblCol">
             Bro List (check your info)
           </button>
-      <div id="contTblCol" class="collapse" data-bs-parent="#broList">
-          <table class="table table-striped table-hover">
-            <thead>
-              <tr>
-                <th scope="col">NAME</th>
-                <th scope="col">EMAIL</th>
-                <th scope="col">PHONE</th>
-                <th scope="col">RSVP</th>
-              </tr>
-            </thead>
-            <tbody id="contTblBdy">
-            </tbody>
-          </table>
-        If you do not see your name, text or email Curtis.
+          <div id="contTblCol" class="collapse" data-bs-parent="#broList">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">NAME</th>
+                  <th scope="col">EMAIL</th>
+                  <th scope="col">PHONE</th>
+                  <th scope="col">RSVP</th>
+                </tr>
+              </thead>
+              <tbody id="contTblBdy">
+              </tbody>
+            </table>
+            If you do not see your name, text or email <a href="mailto:crbs1234@gmail.com">Curtis</a>.
+          </div>
+    </div>
+    <div class="modal fade" id="barModal" tabindex="-1" aria-labelledby="barModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="barModalLabel">Add Bar Locations</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Insert Bar Locations below
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Pin Name" id="newStartName" aria-label="" aria-describedby="button-addon1">
+              <input type="text" class="form-control" placeholder="Lat" id="newBarLat" aria-label="" aria-describedby="button-addon1">
+              <input type="text" class="form-control" placeholder="Long" id="newBarLong" aria-label="" aria-describedby="button-addon1">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="saveNewBar">Save changes</button>
+          </div>
+        </div>
       </div>
     </div>
-  
     
   </body>
 </html>

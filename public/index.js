@@ -26,10 +26,10 @@ const firebaseConfig = {
     measurementId: "G-DLFKRF88QQ"
   };
 
-function initMap() {
-    var newLat = $("#newPinLat").val();
-    var newLang = $("#newPinLang").val();
-    var pinTtl = $("#newPnTtl").val();
+/* function initMap(locs) {
+    var newLat = $("#newBarLat").val();
+    var newLang = $("#newBarLong").val();
+    var pinTtl = $("#newStartName").val();
     const myLatLng = { lat: 41.701040, lng: -72.320160 };
     var newPin = { lat: parseFloat(newLat), lng: parseFloat(newLang) };
     
@@ -40,7 +40,7 @@ function initMap() {
     new google.maps.Marker({
         position: myLatLng,
         map,
-        title: "Australia",
+        title: "Dylan's Appt",
       });
 
     if(newLat !== "" || newLang !=="") {
@@ -50,7 +50,18 @@ function initMap() {
         title: pinTtl,
       });
     }
-  }
+
+    if(locs !== undefined) {
+        for (loc in locs) {
+            var newLoc = { lat: parseFloat(loc.lat), lng: parseFloat(loc.long)}
+            new google.maps.Marker({
+                position: newLoc,
+                map,
+                title: loc.name,
+              });
+            }
+    }
+} */
   
 
 window.addEventListener('DOMContentLoaded', function () {
@@ -69,6 +80,7 @@ function init() {
       const storeRef = refST(storage);
       const imagesRef = refST(storage, '/pictures/');
       const guestRef = ref(db, '/guests/');
+      //const mapRef = ref(db, '/map/');
       
       var user;
       //window.location.hash = 'welcome';
@@ -88,7 +100,52 @@ function init() {
         })
     }
 
+    function setMapStart (lat, lng) {
+        set(ref(db,'/map/start'),{
+            'lat': lat,
+            'long': lng
+        });
+    }
+
     //listFiles();
+
+    $('#addBar').on('click', function(){
+        $('#barModal').modal('show');
+    });
+
+    $('#saveNewBar').on('click',function(){
+        saveLoc();
+    });
+
+    //initMap();
+
+    function saveLoc() {
+        var newLat = $('#newBarLat').val();
+        var newLong = $('#newBarLong').val();
+        var locName = $('#newStartName').val();
+        set(ref(db, '/map/bars/'+locName),{
+            'lat':newLat,
+            'long':newLong,
+            'name':locName
+        });
+        alert('Success');
+        $('#newBarLat').val('');
+        $('#newBarLong').val('');
+        $('#newStartName').val('');
+    }
+
+    loadMap();
+
+    function loadMap() {
+        var locs;
+        get(ref(db,'/map/bars/')).then((snapshot) => {
+            if (snapshot.exists()) {
+                locs = Object.values(snapshot.val());
+                //console.log(locs);
+                initMap(locs);
+            }
+        });
+    }
 
     function emptyDB(){
         get(ref(db,'/')).then((snapshot) => {
@@ -104,7 +161,7 @@ function init() {
                     }
                 });
             }
-        })
+        });
     }
     var picCount = 0;
     //emptyDB();
